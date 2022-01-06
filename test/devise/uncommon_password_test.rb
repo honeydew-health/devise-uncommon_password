@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class Devise::UncommonPassword::Test < ActiveSupport::TestCase
   test "should return the specified number of passwords" do
@@ -47,5 +48,14 @@ class Devise::UncommonPassword::Test < ActiveSupport::TestCase
     user = User.create email:"example@example.org", password: password, password_confirmation: password
 
     assert user.update(email: 'anotherexample@example.org')
+  end
+
+  test "should pass validation for user with no password and devise's password_required=false" do
+    password = nil
+    user = User.create email: "example@example.org", password: password, password_confirmation: password
+    
+    user.stub(:password_required?, false) do
+      assert user.valid?
+    end
   end
 end
