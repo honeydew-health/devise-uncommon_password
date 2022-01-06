@@ -64,6 +64,7 @@ class Devise::UncommonPassword::Test < ActiveSupport::TestCase
     password = "#{common_password}test"
     user = User.create email: "example@example.org", password: password, password_confirmation: password
     assert Devise::Models::UncommonPassword.common_passwords.include?(common_password), "common_password not present in common_passwords definition"
+    assert_not Devise::Models::UncommonPassword.common_passwords.include?(password), "test case password should not be a full common_password"
     assert_not user.valid?
   end
 end
