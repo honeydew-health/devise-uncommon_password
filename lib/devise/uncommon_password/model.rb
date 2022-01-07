@@ -32,7 +32,7 @@ module Devise
       def not_common_password
         return unless password
         # Check that the password doesn't equal or partially include a common password
-        if Devise::Models::UncommonPassword.common_passwords.find { |common_password| password.include?(common_password) }
+        if Devise::Models::UncommonPassword.common_passwords.map(&:downcase).find { |common_password| password.downcase.include?(common_password) }
           errors.add(:password, :common_password)
         end
       end
